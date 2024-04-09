@@ -19,24 +19,39 @@ const videoBroadcast = document.getElementById("canvas");
 const stream = videoBroadcast.captureStream(12);
 const ctx = videoBroadcast.getContext('2d');
 
+let magic = 6;
+
 let noise = (ctx) => {
-    let imax = videoBroadcast.clientHeight / 25;
-    let jmax = videoBroadcast.clientWidth / 25;
+    let imax = videoBroadcast.clientHeight / magic;
+    let jmax = videoBroadcast.clientWidth / magic;
     for (let i = 0; i < imax; i++) {
-        for (let j = 0; j < jmax; j++) {
+        for (let j = 0; j < jmax; j++) {            
             ctx.fillStyle = `rgb(
-                ${Math.floor(Math.random()*255 - 42.5 * i)}
-                ${Math.floor(Math.random()*255 - 42.5 * j)}
+                ${Math.floor(Math.random() * 120 - 20.5 * i)}
+                ${Math.floor(Math.random() * 120 - 20.5 * j)}
                 0)`;
-            ctx.fillRect(j * 25, i * 25, 25, 25);
+            ctx.fillRect(j * magic, i * magic, magic, magic);
+        }
+        // window.bufferDomain[i] / 128.0;
+    }
+    
+    if (window.bufferDomain) {
+        for (let j = 0; j < jmax; j++) {
+            let cur = Math.ceil((j / jmax) * window.bufferLength);
+            ctx.fillStyle = `rgb(0 ${180 + Math.random() * 220} 0)`;
+            let y = Math.floor(window.bufferDomain[cur] * (imax/2) + imax/2);
+            ctx.fillRect(j * magic, y * magic, magic, magic);
         }
     }
+
     ctx.fill();
 }
 
 let loop = () => {
     noise(ctx);
-    requestAnimationFrame(loop);
+    setTimeout(() => {
+        requestAnimationFrame(loop);
+    }, 83)
 }
 
 loop()
