@@ -16,12 +16,17 @@ const url = new URL("http://localhost:8889/live2/publish?video_codec=h264%2F9000
 
 const videoBroadcast = document.getElementById("canvas");
 
-const stream = videoBroadcast.captureStream(12);
-const ctx = videoBroadcast.getContext('2d');
+const offscreen = document.createElement('canvas');
+offscreen.width = 426;
+offscreen.height = 240;
+
+const stream = offscreen.captureStream(12);
+const ctx = offscreen.getContext('2d');
+const ctxBc = videoBroadcast.getContext("2d");
 
 let magic = 6;
 
-let noise = (ctx) => {
+let noise = (ctx, ctxBc) => {
     let imax = videoBroadcast.clientHeight / magic;
     let jmax = videoBroadcast.clientWidth / magic;
     for (let i = 0; i < imax; i++) {
@@ -44,11 +49,13 @@ let noise = (ctx) => {
         }
     }
 
-    ctx.fill();
+    ctxBc.drawImage(offscreen, 0, 0)
+    // Perform some drawing for the first canvas using the gl context
+    // videoBroadcast.transferFromImageBitmap(offscreen.transferToImageBitmap());
 }
 
 let loop = () => {
-    noise(ctx);
+    noise(ctx, ctxBc);
     setTimeout(() => {
         requestAnimationFrame(loop);
     }, 83)
@@ -317,7 +324,7 @@ class Transmitter {
             answer,
             "h264",    //     videoForm.codec.value,
             "opus",    //     audioForm.codec.value,
-            "3000",    //     videoForm.bitrate.value,
+            "300",    //     videoForm.bitrate.value,
             "128",   //     audioForm.bitrate.value,
             false    //     audioForm.voice.checked,
         );
