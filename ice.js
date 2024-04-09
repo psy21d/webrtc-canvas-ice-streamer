@@ -28,6 +28,9 @@ let magic = 6;
 let booster = 1;
 let max = 0;
 let superMax = 1;
+let pre = {
+    y: 0,
+}
 
 let noise = (ctx, ctxBc) => {
     let imax = videoBroadcast.clientHeight / magic;
@@ -50,7 +53,8 @@ let noise = (ctx, ctxBc) => {
         max = Math.max(max, num);
     }
 
-    superMax = superMax * 0.97 + max * 0.03
+    superMax = superMax * 0.97 + max * 0.03;
+    superMax = Math.max(superMax, max);
     
     if (window.bufferDomain) {
         for (let j = 0; j < jmax; j++) {
@@ -58,12 +62,22 @@ let noise = (ctx, ctxBc) => {
             ctx.fillStyle = `rgb(0 ${180 + Math.random() * 220} 0)`;
             let y = Math.floor((window.bufferDomain[cur] / (superMax * 0.8)) * (imax/2) + imax/2);
             ctx.fillRect(j * magic, y * magic, magic, magic);
+            if (pre.y < y) {
+                for(let z = pre.y; z < y; z++) {
+                    ctx.fillStyle = `rgb(0 ${180 + Math.random() * 220} 0)`;
+                    ctx.fillRect(j * magic, z * magic, magic, magic);
+                }
+            } else {
+                for(let z = y; z < pre.y; z++) {
+                    ctx.fillStyle = `rgb(0 ${180 + Math.random() * 220} 0)`;
+                    ctx.fillRect(j * magic, z * magic, magic, magic);
+                }
+            }
+            pre.y = y;
         }
     }
 
     ctxBc.drawImage(offscreen, 0, 0)
-    // Perform some drawing for the first canvas using the gl context
-    // videoBroadcast.transferFromImageBitmap(offscreen.transferToImageBitmap());
 }
 
 let loop = () => {
