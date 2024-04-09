@@ -6,6 +6,11 @@ const ERROR = 3;
 let state = INITIALIZING;
 let errorMessage = '';
 
+/*
+ Я, psy21d, честно грыз уебанский код примера для mediamtx, но это единственный работающий код для webrtc стриминга вообще
+ За 4 часа мне удалось починить и запустить код примера без интерфейсов, я их все выпилил. 
+*/
+
 const url = new URL("http://localhost:8889/live2/publish?video_codec=h264%2F90000&video_bitrate=3000&audio_bitrate=128&audio_voice=false&audio_codec=opus%2F48000&video_width=320&video_height=240");
 //const videoBroadcast = document.getElementById("broadcast");
 
