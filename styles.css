@@ -1,0 +1,13 @@
+video {
+    width: 320px;
+    height: 240px;
+    object-fit: cover;
+}
+
+canvas {
+	position: absolute;
+	opacity: 1; // adjust me!
+	z-index: 9999;
+	pointer-events: none;
+	user-select: none;
+}
