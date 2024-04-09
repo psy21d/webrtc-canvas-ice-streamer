@@ -25,6 +25,9 @@ const ctx = offscreen.getContext('2d');
 const ctxBc = videoBroadcast.getContext("2d");
 
 let magic = 6;
+let booster = 1;
+let max = 0;
+let superMax = 1;
 
 let noise = (ctx, ctxBc) => {
     let imax = videoBroadcast.clientHeight / magic;
@@ -39,12 +42,21 @@ let noise = (ctx, ctxBc) => {
         }
         // window.bufferDomain[i] / 128.0;
     }
+
+    max = 0;
+
+    for (let x = 0; x < window.bufferLength; x ++) {
+        let num = Math.abs(window.bufferDomain[x]);
+        max = Math.max(max, num);
+    }
+
+    superMax = superMax * 0.97 + max * 0.03
     
     if (window.bufferDomain) {
         for (let j = 0; j < jmax; j++) {
             let cur = Math.ceil((j / jmax) * window.bufferLength);
             ctx.fillStyle = `rgb(0 ${180 + Math.random() * 220} 0)`;
-            let y = Math.floor(window.bufferDomain[cur] * (imax/2) + imax/2);
+            let y = Math.floor((window.bufferDomain[cur] / (superMax * 0.8)) * (imax/2) + imax/2);
             ctx.fillRect(j * magic, y * magic, magic, magic);
         }
     }
