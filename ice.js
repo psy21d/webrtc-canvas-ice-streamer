@@ -35,6 +35,7 @@ const ctx = offscreen.getContext('2d');
 const ctxBc = videoBroadcast.getContext("2d");
 
 let magic = 6;
+let hidden = 0.7;
 let booster = 1;
 let max = 0;
 let superMax = 1;
@@ -47,10 +48,11 @@ let noise = (ctx, ctxBc) => {
     let jmax = videoBroadcast.clientWidth / magic;
     for (let i = 0; i < imax; i++) {
         for (let j = 0; j < jmax; j++) {            
-            ctx.fillStyle = `rgb(
-                ${Math.floor(Math.random() * 120 - 20.5 * i)}
-                ${Math.floor(Math.random() * 120 - 20.5 * j)}
-                0)`;
+            ctx.fillStyle = `rgba(
+                ${Math.floor(Math.random() * 120 - 20.5 * i)},
+                ${Math.floor(Math.random() * 120 - 20.5 * j)},
+                0,
+                ${hidden})`;
             ctx.fillRect(j * magic, i * magic, magic, magic);
         }
         // window.bufferDomain[i] / 128.0;
@@ -69,17 +71,17 @@ let noise = (ctx, ctxBc) => {
     if (window.bufferDomain) {
         for (let j = 0; j < jmax; j++) {
             let cur = Math.ceil((j / jmax) * window.bufferLength);
-            ctx.fillStyle = `rgb(0 ${180 + Math.random() * 220} 0)`;
+            ctx.fillStyle = `rgba(0, ${180 + Math.random() * 220}, 0, ${hidden})`;
             let y = Math.floor((window.bufferDomain[cur] / (superMax * 0.8)) * (imax/2) + imax/2);
             ctx.fillRect(j * magic, y * magic, magic, magic);
             if (pre.y < y) {
                 for(let z = pre.y; z < y; z++) {
-                    ctx.fillStyle = `rgb(0 ${180 + Math.random() * 220} 0)`;
+                    ctx.fillStyle = `rgba(0, ${180 + Math.random() * 220}, 0, ${hidden})`;
                     ctx.fillRect(j * magic, z * magic, magic, magic);
                 }
             } else {
                 for(let z = y; z < pre.y; z++) {
-                    ctx.fillStyle = `rgb(0 ${180 + Math.random() * 220} 0)`;
+                    ctx.fillStyle = `rgba(0, ${180 + Math.random() * 220}, 0, ${hidden})`;
                     ctx.fillRect(j * magic, z * magic, magic, magic);
                 }
             }
@@ -360,8 +362,8 @@ class Transmitter {
             answer,
             "h264",    //     videoForm.codec.value,
             "opus",    //     audioForm.codec.value,
-            "300",    //     videoForm.bitrate.value,
-            "128",   //     audioForm.bitrate.value,
+            "160",    //     videoForm.bitrate.value,
+            "32",   //     audioForm.bitrate.value,
             false    //     audioForm.voice.checked,
         );
 
