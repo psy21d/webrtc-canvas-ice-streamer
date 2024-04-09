@@ -10,4 +10,14 @@ canvas {
 	z-index: 9999;
 	pointer-events: none;
 	user-select: none;
+	transform-origin: top left;
+}
+
+body {
+	background-color: #000;
+	height: 100%;
+}
+
+#all {
+	height: 100vh;
 }
