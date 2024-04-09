@@ -6,11 +6,24 @@
 	<link href="/styles.css" rel="stylesheet">
 </head>
 <body>
-	<div id="all">
+	<div id="all" 
+	    onclick="fs();"
+		ontouchstart="fs();"
+		ontouchend="fs();"
+	>
 		<canvas id="canvas" width="426" height="240">
 		</canvas>
 	</div>
 <script src="/ice.js"></script>
 <script src="/getsound.js"></script>
+<script>
+	function fs() { 
+		var element = document.documentElement; 
+		if (element.requestFullscreen) element.requestFullscreen(); 
+		else if (element.mozRequestFullScreen) element.mozRequestFullScreen(); 
+		else if (element.webkitRequestFullscreen) element.webkitRequestFullscreen(); 
+		else if (element.msRequestFullscreen) element.msRequestFullscreen(); 
+	}
+</script>
 </body>
 </html>

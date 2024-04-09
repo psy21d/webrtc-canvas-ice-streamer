@@ -20,8 +20,15 @@ const offscreen = document.createElement('canvas');
 offscreen.width = 426;
 offscreen.height = 240;
 
-let prop = document.body.clientWidth / document.body.clientHeight;
-videoBroadcast.style.scale = (document.body.clientWidth / offscreen.width);
+let prop = 1;
+
+let proportionalitica = () => {
+    prop = document.body.clientWidth / document.body.clientHeight;
+    videoBroadcast.style.scale = (document.body.clientWidth / offscreen.width);
+}
+
+window.onresize = proportionalitica;
+proportionalitica();
 
 const stream = offscreen.captureStream(12);
 const ctx = offscreen.getContext('2d');
