@@ -20,19 +20,10 @@ const stream = videoBroadcast.captureStream(12);
 const ctx = videoBroadcast.getContext('2d');
 
 let noise = (ctx) => {
-    
-	const w = ctx.canvas.width,
-				h = ctx.canvas.height,
-				iData = ctx.createImageData(w, h),
-				buffer32 = new Uint32Array(iData.data.buffer),
-				len = buffer32.length
-	  let i = 0
-
-	for(; i < len;i++)
-		if (Math.random() < 0.5) buffer32[i] = 0xffffffff;
-
-    for (let i = 0; i < 6; i++) {
-        for (let j = 0; j < 6; j++) {
+    let imax = videoBroadcast.clientHeight / 25;
+    let jmax = videoBroadcast.clientWidth / 25;
+    for (let i = 0; i < imax; i++) {
+        for (let j = 0; j < jmax; j++) {
             ctx.fillStyle = `rgb(
                 ${Math.floor(Math.random()*255 - 42.5 * i)}
                 ${Math.floor(Math.random()*255 - 42.5 * j)}
