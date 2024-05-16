@@ -44,8 +44,8 @@ let pre = {
 }
 
 let noise = (ctx, ctxBc) => {
-    // let imax = videoBroadcast.clientHeight / magic;
-    // let jmax = videoBroadcast.clientWidth / magic;
+    let imax = videoBroadcast.clientHeight / magic;
+    let jmax = videoBroadcast.clientWidth / magic;
     // for (let i = 0; i < imax; i++) {
     //     for (let j = 0; j < jmax; j++) {            
     //         ctx.fillStyle = `rgba(
