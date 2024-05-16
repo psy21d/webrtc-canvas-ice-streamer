@@ -60,6 +60,9 @@ let noise = (ctx, ctxBc) => {
 
     max = 0;
 
+    ctx.fillStyle = `rgba(0, 0, 0, ${hidden})`;
+    ctx.fillRect(0, 0, videoBroadcast.clientWidth, videoBroadcast.clientHeight);
+
     for (let x = 0; x < window.bufferLength; x ++) {
         let num = Math.abs(window.bufferDomain[x]);
         max = Math.max(max, num);
